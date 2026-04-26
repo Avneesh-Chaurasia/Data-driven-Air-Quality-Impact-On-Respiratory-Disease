@@ -1,0 +1,62 @@
+/* src/styles/global.css */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:      #060d0f;
+  --surface: #0c1a1c;
+  --surface2:#111f22;
+  --accent:  #00f5a0;
+  --accent2: #ff4d4d;
+  --accent3: #f5a623;
+  --accent4: #4d9fff;
+  --purple:  #a259ff;
+  --pink:    #ff6fd8;
+  --text:    #e8f4f1;
+  --muted:   #4a6e6a;
+  --muted2:  #7a9e99;
+  --border:  rgba(0,245,160,0.13);
+  --border2: rgba(255,255,255,0.06);
+  --mono:    'Space Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --body:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Leaflet dark mode ── */
+.leaflet-tile { filter: brightness(0.42) saturate(0.5) hue-rotate(165deg) !important; }
+.leaflet-container { background: var(--bg) !important; }
+.leaflet-control-zoom a {
+  background: var(--surface) !important;
+  color: var(--accent) !important;
+  border-color: var(--border) !important;
+}
+.leaflet-control-attribution { display: none !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+/* ── Keyframes shared ── */
+@keyframes barGrow   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes barUp     { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes fadeUp    { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse     { 0%,100%{ opacity:.3; transform:scale(1); } 50%{ opacity:1; transform:scale(1.06); } }
+@keyframes blink     { 0%,100%{ opacity:1; } 50%{ opacity:.12; } }
+@keyframes hintBob   { 0%,100%{ opacity:.35; transform:translateX(-50%) translateY(0); } 50%{ opacity:.9; transform:translateX(-50%) translateY(7px); } }
+@keyframes ctaPulse  { 0%,100%{ opacity:.4; transform:scale(1); } 50%{ opacity:1; transform:scale(1.04); } }
+@keyframes logoAnim  { 0%,100%{ opacity:.35; } 50%{ opacity:1; } }
+@keyframes loadBar   { from{width:0} to{width:100%} }
+@keyframes ringRot   { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+

@@ -1,0 +1,46 @@
+/* Remove default browser spacing */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* prevent double scroll */
+}
+
+/* Main scroll container */
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Each slide */
+.slide {
+  height: 100vh;   /* full screen height */
+  width: 100vw;    /* full screen width */
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Optional: center content easily */
+.slide-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Optional: hide scrollbar (clean UI) */
+.app-container::-webkit-scrollbar {
+  display: none;
+}
+.app-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.app-root {
+  height: 100%;
+  width: 100%;
+}
