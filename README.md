@@ -104,7 +104,11 @@ npm start
 
 ## 📸 Screenshots
 
-(Add your project screenshots here)
+### 🏠 Home Page
+![Home](Screenshot/Screenshot from 2026-05-04 21-17-02.png)
+
+### 🔐 Prediction Page
+![Prediction](Screenshot/Screenshot from 2026-05-04 21-17-32.png)
 
 ---
 
