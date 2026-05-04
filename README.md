@@ -88,7 +88,7 @@ python app.py
 ```
 cd Frontend
 npm install
-npm start
+npm run dev
 ```
 
 ---
