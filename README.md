@@ -24,7 +24,7 @@ The system allows users to explore air quality data, understand its impact, and 
 ### Frontend:
 
 * React.js
-* HTML, CSS
+* Tailwind CSS
 
 ### Backend:
 
