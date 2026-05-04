@@ -46,11 +46,11 @@ The system allows users to explore air quality data, understand its impact, and 
 AQI Project/
 │
 ├── Backend/
+    ├── app.py
 │   ├── auth.py
 │   ├── users.db
-│   ├── aqi_data.db
 │   └── instance/
-│
+│       └── aqi_data.db
 ├── Frontend/
 │   ├── src/
 │   │   ├── components/
@@ -78,7 +78,6 @@ cd Data-driven-Air-Quality-Impact-On-Respiratory-Disease
 
 ```
 cd Backend
-pip install -r requirements.txt
 python app.py
 ```
 
@@ -196,13 +195,12 @@ __pycache__/
 
 ---
 
-## 🧠 Future Improvements
+## 🧠 Key Learnings
 
-* Deploy the project (AWS / Render / Vercel)
-* Add real-time AQI API integration
-* Improve ML model accuracy
-* Add more health datasets
-* Enhance UI/UX
+- Built a full-stack application using Flask and React  
+- Implemented user authentication and database management  
+- Applied machine learning for real-world data analysis  
+- Learned proper dependency and project structure management  
 
 ---
 
