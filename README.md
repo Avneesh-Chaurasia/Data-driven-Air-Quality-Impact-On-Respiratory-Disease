@@ -105,10 +105,10 @@ npm start
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home](Screenshot/Screenshot from 2026-05-04 21-17-02.png)
+![Home](Screenshot/Screenshot%20from%202026-05-04%2021-17-02.png)
 
 ### 🔐 Prediction Page
-![Prediction](Screenshot/Screenshot from 2026-05-04 21-17-32.png)
+![Prediction](Screenshot/Screenshot%20from%202026-05-04%2021-17-32.png)
 
 ---
 
