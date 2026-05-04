@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Slide2Prediction() {
+export default function SlidePrediction() {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [aqi, setAqi] = useState(null);
   const [currentAqi, setCurrentAqi] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const [disease, setDisease] = useState("");
   const [advice, setAdvice] = useState("");
 
@@ -39,6 +40,15 @@ export default function Slide2Prediction() {
     "Tripura": ["Agartala"],
     "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Varanasi", "Agra", "Prayagraj"],
     "Uttarakhand": ["Dehradun", "Haridwar", "Rishikesh"]
+  };
+
+  const getAQIColor = (aqi) => {
+    if (aqi <= 50) return "text-green-400";
+    if (aqi <= 100) return "text-yellow-400";
+    if (aqi <= 150) return "text-orange-400";
+    if (aqi <= 200) return "text-red-400";
+    if (aqi <= 300) return "text-purple-400";
+    return "text-red-700";
   };
 
   const handlePredict = async () => {
@@ -78,14 +88,13 @@ export default function Slide2Prediction() {
   };
 
   return (
-    <section id="slide-2" className="h-screen snap-start relative">
+    <section className="h-screen snap-start relative ">
       <div className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-y-auto">
-
         {/* HEADER */}
         <div className="absolute top-16 left-10 z-20">
-          <div className="text-[10px] tracking-[0.3em] text-green-400 uppercase font-mono mb-3">
-            ◈ SLIDE 02 / PREDICTION
-          </div>
+          {/* <div className="text-[10px] tracking-[0.3em] text-green-400 uppercase font-mono mb-3">
+            ◈ PREDICTION PANEL
+          </div> */}
           <h1 className="text-[clamp(2.5rem,5vw,5rem)] font-extrabold leading-none">
             AQI <span className="text-green-400">PREDICTION</span> SYSTEM
           </h1>
@@ -93,7 +102,6 @@ export default function Slide2Prediction() {
 
         {/* INPUT BOX — position:relative is the anchor for the result below */}
         <div className="z-20 flex flex-col gap-8 w-[700px] relative -translate-y-16">
-
           {/* INPUT ROW */}
           <div className="flex gap-10">
             <div className="flex flex-col w-1/2 group">
@@ -132,9 +140,9 @@ export default function Slide2Prediction() {
           {/* BUTTON */}
           <button
             onClick={handlePredict}
-            className="relative overflow-hidden px-10 py-3 font-semibold text-black bg-green-400 rounded-md transition hover:bg-green-300"
+            className="relative overflow-hidden px-10 py-3 font-semibold text-black bg-green-400 rounded-md transition hover:bg-green-300 cursor-pointer tracking-wide"
           >
-            {loading ? "Predicting..." : "Predict Future AQI"}
+            {loading ? "Generating Forecast..." : "Generate AQI Forecast"}
             <span className="absolute inset-0 bg-green-400 opacity-20 blur-xl"></span>
           </button>
 
@@ -149,11 +157,14 @@ export default function Slide2Prediction() {
             </p>
 
             <p className="text-2xl font-bold text-green-400">
-              {aqi !== null ? `Future AQI (after 6 hours): ${aqi.toFixed(2)}` : ""}
+              {aqi !== null ? `AQI Forecast: ${aqi.toFixed(0)}` : ""}
             </p>
 
-            <p className="text-2xl text-red-400 font-semibold">
-              {disease && `Disease: ${disease}`}
+            {/* <p className="text-2xl text-red-400 font-semibold">
+              {disease && `Health Impact: ${disease}`}
+            </p> */}
+            <p className={`text-2xl font-semibold ${getAQIColor(aqi)}`}>
+              {disease && `Health Impact: ${disease}`}
             </p>
 
             {advice && (

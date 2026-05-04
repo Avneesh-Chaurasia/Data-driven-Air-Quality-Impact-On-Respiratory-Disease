@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_cors import CORS
 import sqlite3
 from flask_bcrypt import Bcrypt
 import jwt
@@ -6,29 +7,31 @@ import datetime
 import os
 
 auth = Blueprint('auth', __name__)
+CORS(auth)
 bcrypt = Bcrypt()
 
-# 🔐 Use environment variable for security
 SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret")
 
-# ✅ Absolute DB path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "users.db")
 
 
 # ================== DB HELPER ==================
 def get_db():
-    return sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 def init_users_db():
     conn = get_db()
     c = conn.cursor()
 
+    # ✅ Updated table with bio
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
+            username TEXT UNIQUE,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL
         )
@@ -49,18 +52,16 @@ def signup():
 
     data = request.get_json()
 
-    username = data.get('username')
-    email = data.get('email')
+    username = (data.get('username') or "").strip()
+    email = (data.get('email') or "").strip().lower()
     password = data.get('password')
 
-    # ✅ Validation
     if not username or not email or not password:
         return jsonify({"error": "All fields are required"}), 400
 
     if "@" not in email:
         return jsonify({"error": "Invalid email format"}), 400
 
-    # 🔐 Hash password
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     conn = get_db()
@@ -76,10 +77,7 @@ def signup():
         return jsonify({"message": "User created successfully"}), 201
 
     except sqlite3.IntegrityError:
-        return jsonify({"error": "Email already registered"}), 400
-
-    except Exception:
-        return jsonify({"error": "Something went wrong"}), 500
+        return jsonify({"error": "Username or Email already exists"}), 400
 
     finally:
         conn.close()
@@ -88,41 +86,35 @@ def signup():
 # ================== LOGIN ==================
 @auth.route('/login', methods=['POST'])
 def login():
-    if not request.is_json:
-        return jsonify({"error": "Invalid JSON"}), 400
-
     data = request.get_json()
 
-    email = data.get('email')
+    identifier = (data.get('identifier') or "").strip().lower()
     password = data.get('password')
-
-    if not email or not password:
-        return jsonify({"error": "Email and password required"}), 400
 
     conn = get_db()
     c = conn.cursor()
 
     user = c.execute(
-        "SELECT * FROM users WHERE email = ?",
-        (email,)
+        "SELECT * FROM users WHERE LOWER(email)=? OR LOWER(username)=?",
+        (identifier, identifier)
     ).fetchone()
 
     conn.close()
 
-    if user and bcrypt.check_password_hash(user[3], password):
+    if not user:
+        return jsonify({"error": "User not found"}), 404
 
-        token = jwt.encode({
-            'user_id': user[0],
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
-        }, SECRET_KEY, algorithm='HS256')
+    if not bcrypt.check_password_hash(user["password"], password):
+        return jsonify({"error": "Wrong password"}), 401
 
-        # ✅ Fix for PyJWT returning bytes
-        if isinstance(token, bytes):
-            token = token.decode('utf-8')
+    token = jwt.encode({
+        'user_id': user["id"],
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+    }, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({
-            "message": "Login successful",
-            "token": token
-        })
-
-    return jsonify({"error": "Invalid credentials"}), 401
+    return jsonify({
+        "message": "Login successful",
+        "token": token,
+        "username": user["username"],
+        "email": user["email"] 
+    })

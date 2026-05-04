@@ -1,5 +1,6 @@
 // src/components/Slide1Hero.jsx
 import React, { useEffect, useRef } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 
 const pollutants = [
   { name: 'PM2.5', value: 187, pct: 100, color: 'var(--accent2)'  },
@@ -17,6 +18,7 @@ const stats = [
 
 export default function Slide1Hero() {
   const barsRef = useRef([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     barsRef.current.forEach((bar, i) => {
@@ -76,7 +78,7 @@ export default function Slide1Hero() {
 
           {/* ── CENTER: Title ── */}
           <div style={styles.titleBlock}>
-            {/* <div style={styles.eyebrow}>◈ College Mini-Project · 2025–26</div> */}
+            <div style={styles.eyebrow}>◈ College Mini-Project · 2025–26</div>
             <h1 style={styles.h1}>
               AIR <span style={{ color: 'var(--accent)' }}>QUALITY</span>
               <br />IMPACT &amp;
@@ -87,10 +89,16 @@ export default function Slide1Hero() {
               Analysing the correlation between atmospheric pollutant concentrations and the
               prevalence of respiratory disease across urban populations using machine learning.
             </p>
+            {/* Button */}
             <div style={styles.btnRow}>
-              <a href="#slide-3" style={{ ...styles.btn, ...styles.btnPrimary }}>PREDICT AQI →</a>
-              <a href="#slide-4" style={{ ...styles.btn, ...styles.btnPrimary }}>EXPLORE MAPS →</a>
-              <a href="#slide-5" style={{ ...styles.btn, ...styles.btnPrimary }}>Algorithm →</a>
+              <button
+                style={{ ...styles.btn, ...styles.btnPrimary }}
+                onClick={() => navigate("/prediction")} 
+              >
+                PREDICT AQI →
+              </button>
+              <a href="#slide-3" style={{ ...styles.btn, ...styles.btnPrimary }}>EXPLORE MAPS →</a>
+              <a href="#slide-5" style={{ ...styles.btn, ...styles.btnPrimary }}>TEAM</a>
             </div>
           </div>
 

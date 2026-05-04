@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 // 🔑 PASTE YOUR OpenWeatherMap API Key here:
-const OWM_KEY = import.meta.env.VITE_OWM_KEY;
-const AQICN_TOKEN = import.meta.env.VITE_AQICN_TOKEN;
+const OWM_KEY = '2b5344ba4ee72057ff3dd12d4605947b';
+const AQICN_TOKEN = '6bc8a4f01727157ea5ccd8f8a9bb69c195dd0e37';
 
 const AQI_LABELS = ['', 'Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
 const AQI_COLORS = ['', '#00e400', '#ffff00', '#ff7e00', '#ff0000', '#7e0023'];
@@ -16,7 +16,7 @@ const getCategory = (aqi) => {
   return 5;
 };
 
-export default function Slide3Maps() {
+export default function Slide2Maps() {
   const { ref: sectionRef, inView } = useInView({ threshold: 0.4 });
   const mapAQIRef     = useRef(null);
   const mapClimateRef = useRef(null);
@@ -24,7 +24,7 @@ export default function Slide3Maps() {
   const leafletClimate= useRef(null);
   const initialized   = useRef(false);
 
-  const [aqiData,     setAqiData]     = useState({ badge: 'AQI: —', pm25: '—', pm10: '—', no2: '—', o3: '—' });
+  const [aqiData,     setAqiData]     = useState({ badge: 'AQI: —', pm25: '—', pm10: '—', no2: '—', co: '—' });
   const [weatherData, setWeatherData] = useState({ temp: '—', feels: '—', humid: '—', wind: '—', cond: '—' });
   const [location,    setLocation]    = useState('📍 Detecting location…');
   const [showNotice,  setShowNotice]  = useState(false);
@@ -84,7 +84,7 @@ export default function Slide3Maps() {
       const pm25 = iaqi.pm25?.v ?? '—';
       const pm10 = iaqi.pm10?.v ?? '—';
       const no2  = iaqi.no2?.v  ?? '—';
-      const o3   = iaqi.o3?.v   ?? '—';
+      const co   = iaqi.co?.v   ?? '—';
 
       const col = AQI_COLORS[getCategory(aqi)] || '#999';
 
@@ -94,7 +94,7 @@ export default function Slide3Maps() {
         pm25: `${pm25} µg/m³`,
         pm10: `${pm10} µg/m³`,
         no2:  `${no2} µg/m³`,
-        o3:   `${o3} µg/m³`,
+        co:   `${co} µg/m³`,
       });
 
       const icon = L.divIcon({
@@ -151,14 +151,14 @@ export default function Slide3Maps() {
   );
 
   return (
-    <section id="slide-4" ref={sectionRef} style={styles.slide}>
+    <section id="slide-3" ref={sectionRef} style={styles.slide}>
       <div style={styles.grid} />
       <div style={{ ...styles.inner, height: '88vh', display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem 0' }}>
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexShrink: 0 }}>
           <div>
-            <div style={styles.eyebrow}>◈ Slide 04 / Geospatial</div>
+            {/* <div style={styles.eyebrow}>◈ Slide 02 / Geospatial</div> */}
             <h2 style={{ ...styles.displayTitle, fontSize: 'clamp(2.5rem,4.5vw,5rem)' }}>
               LIVE <span style={{ color: 'var(--accent4)' }}>MAP</span> INTELLIGENCE
             </h2>
@@ -186,7 +186,7 @@ export default function Slide3Maps() {
               <StatChip label="PM2.5" value={aqiData.pm25} color="var(--accent2)" />
               <StatChip label="PM10"  value={aqiData.pm10} color="var(--accent3)" />
               <StatChip label="NO₂"   value={aqiData.no2}  color="var(--accent4)" />
-              <StatChip label="O₃"    value={aqiData.o3}   color="var(--accent)"  />
+              <StatChip label="CO"    value={aqiData.co}   color="var(--accent)"  />
             </div>
           </div>
 

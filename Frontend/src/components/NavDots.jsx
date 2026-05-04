@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react';
 const SLIDES = [
   { id:'slide-1', label:'01 / HERO'       },
   { id:'slide-2', label:'02 / PROBLEM' },
-  { id:'slide-3', label:'03 / PREDICTION'       },
-  { id:'slide-4', label:'04 / MAPS' },
-  { id:'slide-5', label:'05 / ALGORITHM'       },
-  { id:'slide-6', label:'06 / CTA'        },
+  { id:'slide-3', label:'03 / MAPS' },
+  { id:'slide-4', label:'04 / ALGORITHM'       },
+  { id:'slide-5', label:'05 / CTA'        },
 ];
 
 export function NavDots({ active, onDotClick }) {

@@ -11,7 +11,7 @@ const IMPACT_STATS = [
 
 export default function Slide6CTA() {
   return (
-    <section id="slide-6" style={styles.slide}>
+    <section id="slide-5" style={styles.slide}>
       <div style={styles.grid} />
 
       {/* Background pulse rings */}
@@ -26,7 +26,7 @@ export default function Slide6CTA() {
 
       <div style={{ ...styles.inner, textAlign:'center', position:'relative', zIndex:1, padding:'2rem 0', marginTop:'4rem' }}>
 
-        <div style={{ ...styles.eyebrow, justifyContent:'center', display:'flex' }}>◈ Slide 06 / Call to Action</div>
+        {/* <div style={{ ...styles.eyebrow, justifyContent:'center', display:'flex' }}>◈ Slide 06 / Call to Action</div> */}
 
         <h2 style={{ fontFamily:'var(--display)', fontSize:'clamp(2rem,6vw,6.5rem)', lineHeight:1, marginBottom:'1rem', maxWidth:'90vw', marginInline:'auto'}}>
           BREATHE<br />
@@ -42,12 +42,39 @@ export default function Slide6CTA() {
         {/* CTA Buttons */}
         <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap', marginBottom:'3rem' }}>
           {[
-            { label:'DOWNLOAD PAPER →', primary:true },
-            { label:'VIEW GITHUB REPO', primary:false },
-            { label:'↑ BACK TO TOP',   primary:false, href:'#slide-1' },
+            // { 
+            //   label:'DOWNLOAD PAPER →', 
+            //   primary:true, href:'', 
+            //   download:true
+            // },
+            { 
+              label:'VIEW GITHUB REPO', 
+              primary:false, 
+              href:'https://github.com/Avneesh-Chaurasia/Data-driven-Air-Quality-Impact-On-Respiratory-Disease' 
+            },
+            { label:'↑ BACK TO TOP', 
+              primary:false, 
+              href:'#slide-1' },
           ].map(b => (
-            <a key={b.label} href={b.href || '#'}
-              style={{ fontFamily:'var(--mono)', fontSize:'clamp(0.55rem,0.8vw,0.7rem)', letterSpacing:'.14em', textTransform:'uppercase', padding:'1rem 2.5rem', border:`1px solid ${b.primary ? 'var(--accent)' : 'var(--muted)'}`, color:b.primary ? 'var(--accent)' : 'var(--muted2)', background:'transparent', cursor:'pointer', textDecoration:'none', transition:'background .2s,color .2s', display:'inline-block', whiteSpace:'nowrap' }}
+            <a 
+              key={b.label} 
+              href={b.href || '#'}
+              {...(b.download && { download: "AQI_Research_Paper.pdf" })}
+              style={{
+                fontFamily:'var(--mono)',
+                fontSize:'clamp(0.55rem,0.8vw,0.7rem)',
+                letterSpacing:'.14em',
+                textTransform:'uppercase',
+                padding:'1rem 2.5rem',
+                border:`1px solid ${b.primary ? 'var(--accent)' : 'var(--muted)'}`,
+                color:b.primary ? 'var(--accent)' : 'var(--muted2)',
+                background:'transparent',
+                cursor:'pointer',
+                textDecoration:'none',
+                transition:'background .2s,color .2s',
+                display:'inline-block',
+                whiteSpace:'nowrap'
+              }}
               onMouseEnter={e => { e.target.style.background = b.primary ? 'var(--accent)' : 'var(--muted)'; e.target.style.color = '#060d0f'; }}
               onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = b.primary ? 'var(--accent)' : 'var(--muted2)'; }}
             >

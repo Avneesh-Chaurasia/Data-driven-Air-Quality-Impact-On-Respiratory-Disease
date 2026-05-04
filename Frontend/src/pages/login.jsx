@@ -4,10 +4,11 @@ import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const [form, setForm] = useState({
-    email: "",
+    identifier: "",   // ✅ username OR email
     password: ""
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -17,23 +18,36 @@ function Login() {
     e.preventDefault();
     setError("");
 
+    if (!form.identifier || !form.password) {
+      setError("Please fill all fields");
+      return;
+    }
+
     try {
       setLoading(true);
 
       const res = await axios.post(
         "http://127.0.0.1:5000/api/login",
-        form
+        {
+          identifier: form.identifier.trim(), // ✅ FIXED
+          password: form.password
+        }
       );
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username);
+      localStorage.setItem("email", res.data.email);
 
-      alert("Login successful");
+      window.dispatchEvent(new Event("storage")); 
+
       navigate("/");
 
     } catch (err) {
-      console.log(err.response);   // 🔍 DEBUG
+      console.log(err?.response || err);
 
-      setError(err.response?.data?.error || "Invalid credentials");
+      setError( 
+        err?.response?.data?.error || "Invalid credentials"
+      );
     } finally {
       setLoading(false);
     }
@@ -46,27 +60,38 @@ function Login() {
 
         <form onSubmit={handleLogin} style={styles.form}>
           
+          {/* ✅ Username or Email */}
           <input
             style={styles.input}
-            value={form.email}   // ✅ controlled
-            placeholder="Email"
-            onChange={e => setForm({ ...form, email: e.target.value })}
+            value={form.identifier}
+            placeholder="Username or Email"
+            onChange={e => setForm({ ...form, identifier: e.target.value })}
           />
 
-          <input
-            style={styles.input}
-            value={form.password}   // ✅ controlled
-            type="password"
-            placeholder="Password"
-            onChange={e => setForm({ ...form, password: e.target.value })}
-          />
+          {/* 🔐 PASSWORD FIELD (clean button, no emoji) */}
+          <div style={styles.passwordWrapper}>
+            <input
+              style={{ ...styles.input, marginBottom: 0 }}
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              placeholder="Password"
+              onChange={e => setForm({ ...form, password: e.target.value })}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={styles.eyeButton}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
 
           <button style={styles.button} type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* ✅ ERROR MESSAGE UI */}
         {error && <p style={styles.error}>{error}</p>}
 
         <p style={styles.footer}>
@@ -111,7 +136,22 @@ const styles = {
     border: "1px solid rgba(255,255,255,0.2)",
     background: "transparent",
     color: "white",
-    outline: "none"
+    outline: "none",
+    width: "100%"
+  },
+  passwordWrapper: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center"
+  },
+  eyeButton: {
+    position: "absolute",
+    right: "8px",
+    background: "none",
+    border: "none",
+    color: "#00f5a0",
+    cursor: "pointer",
+    fontSize: "12px"
   },
   button: {
     padding: "10px",

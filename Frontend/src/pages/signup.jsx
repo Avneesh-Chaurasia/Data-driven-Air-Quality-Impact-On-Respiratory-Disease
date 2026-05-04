@@ -9,32 +9,43 @@ function Signup() {
     password: ""
   });
 
+  const [showPassword, setShowPassword] = useState(false); // 👁️ toggle
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!form.username || !form.email || !form.password) {
+      setError("Please fill all fields");
+      return;
+    }
 
     try {
       setLoading(true);
 
-      await axios.post("http://127.0.0.1:5000/api/signup", form);
+      await axios.post("http://127.0.0.1:5000/api/signup", {
+        username: form.username.trim(),
+        email: form.email.trim().toLowerCase(), // ✅ normalize
+        password: form.password
+      });
 
       alert("Signup successful");
 
-      // ✅ Reset form (now will work because inputs are controlled)
       setForm({
         username: "",
         email: "",
         password: ""
       });
 
-      // ✅ Redirect to login (better UX)
       navigate("/login");
 
     } catch (err) {
-      console.log(err.response);
-      alert(err.response?.data?.error || "Signup failed");
+      console.log(err?.response || err);
+      setError(err?.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -49,31 +60,45 @@ function Signup() {
           
           <input
             style={styles.input}
-            value={form.username}   // ✅ CONTROLLED
+            value={form.username}
             placeholder="Username"
             onChange={e => setForm({ ...form, username: e.target.value })}
           />
 
           <input
             style={styles.input}
-            value={form.email}      // ✅ CONTROLLED
+            type="email"
+            value={form.email}
             placeholder="Email"
             onChange={e => setForm({ ...form, email: e.target.value })}
           />
 
-          <input
-            style={styles.input}
-            value={form.password}   // ✅ CONTROLLED
-            type="password"
-            placeholder="Password"
-            onChange={e => setForm({ ...form, password: e.target.value })}
-          />
+          {/* 🔐 PASSWORD WITH ICON BUTTON */}
+          <div style={styles.passwordWrapper}>
+            <input
+              style={{ ...styles.input, marginBottom: 0 }}
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              placeholder="Password"
+              onChange={e => setForm({ ...form, password: e.target.value })}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={styles.eyeButton}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
 
           <button style={styles.button} type="submit" disabled={loading}>
-            {loading ? "Signing up..." : "Signup"}   {/* ✅ loading UI */}
+            {loading ? "Signing up..." : "Signup"}
           </button>
 
         </form>
+
+        {error && <p style={styles.error}>{error}</p>}
 
         <p style={styles.footer}>
           Already have an account?{" "}
@@ -117,7 +142,22 @@ const styles = {
     border: "1px solid rgba(255,255,255,0.2)",
     background: "transparent",
     color: "white",
-    outline: "none"
+    outline: "none",
+    width: "100%"
+  },
+  passwordWrapper: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center"
+  },
+  eyeButton: {
+    position: "absolute",
+    right: "8px",
+    background: "none",
+    border: "none",
+    color: "#00f5a0",
+    cursor: "pointer",
+    fontSize: "12px"
   },
   button: {
     padding: "10px",
@@ -127,6 +167,11 @@ const styles = {
     color: "#000",
     fontWeight: "bold",
     cursor: "pointer"
+  },
+  error: {
+    marginTop: "10px",
+    color: "red",
+    fontSize: "13px"
   },
   footer: {
     marginTop: "1rem",

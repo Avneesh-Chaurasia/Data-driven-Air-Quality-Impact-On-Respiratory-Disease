@@ -189,13 +189,13 @@ export default function Slide2() {
 
         {/* Header */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "0.5rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          {/* <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <div style={{ height: 1, width: 28, background: "rgba(0,255,180,0.3)" }} />
             <span style={{ fontFamily: "monospace", fontSize: "0.52rem", letterSpacing: "0.45em", color: "rgba(0,255,180,0.7)", textTransform: "uppercase" }}>
               Slide 02 · Analysis
             </span>
             <div style={{ height: 1, width: 28, background: "rgba(0,255,180,0.3)" }} />
-          </div>
+          </div> */}
 
           {/* ← Reduced from clamp(2.5rem,4.5vw,5rem) to clamp(1.8rem,3vw,3rem) */}
           <h1 style={{

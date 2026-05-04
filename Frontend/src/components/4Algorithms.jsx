@@ -63,14 +63,14 @@ function Metric({ val, label, color }) {
 
 export default function Slide4Algorithms() {
   return (
-    <section id="slide-5" style={styles.slide}>
+    <section id="slide-4" style={styles.slide}>
       <div style={styles.grid} />
       <div style={{ ...styles.inner, height:'88vh', display:'flex', flexDirection:'column', gap:'1rem', padding:'1rem 0' }}>
 
         {/* Header */}
         <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', flexShrink:0 }}>
           <div>
-            <div style={styles.eyebrow}>◈ Slide 05 / Machine Learning</div>
+            {/* <div style={styles.eyebrow}>◈ Slide 05 / Machine Learning</div> */}
             <h2 style={{ fontFamily:'var(--display)', fontSize:'clamp(2.5rem,4.5vw,5rem)', lineHeight:.9 }}>
               ALGORITHM <span style={{ color:'var(--accent4)' }}>ARSENAL</span>
             </h2>
